@@ -18,8 +18,8 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public void createStudent(Student student) {
-        studentRepository.save(student);
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
     }
 
     public void deleteById(Long id) {
@@ -28,6 +28,10 @@ public class StudentService {
 
     public Optional<Student> findById(Long id) {
         return studentRepository.findById(id);
+    }
+
+    public Student updateStudent(Student student) {
+        return studentRepository.save(student);
     }
 
 }
