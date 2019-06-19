@@ -3,17 +3,21 @@ package com.gulyaich.boot.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Student {
     @Id
     @GeneratedValue
     private Long id;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
     private String description;
 
-    private Student() {}
+    private Student() {
+    }
 
     public Student(String firstName, String lastName, String description) {
         this.firstName = firstName;
