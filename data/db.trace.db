@@ -52,3 +52,12 @@ INSERT INTO STUDENT (first_name, last_name, description) VALUES ('1', 'Aliko', '
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:498)
 	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+2019-06-19 09:25:49 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "STUDENT[*]"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+STUDENT [42001-199]
+2019-06-19 09:26:06 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'' (STUDENT: ""ID"" BIGINT NOT NULL)"; SQL statement:
+INSERT INTO "PUBLIC"."STUDENT"("ID","DESCRIPTION","FIRST_NAME","LAST_NAME")VALUES(?,?,?,?) -- (?1, ?2, ?3, ?4) [22018-199]
+2019-06-19 09:26:06 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'' (STUDENT: ""ID"" BIGINT NOT NULL)"; SQL statement:
+INSERT INTO "PUBLIC"."STUDENT"("ID","DESCRIPTION","FIRST_NAME","LAST_NAME")VALUES(?,?,?,?) -- (?1, ?2, ?3, ?4) [22018-199]

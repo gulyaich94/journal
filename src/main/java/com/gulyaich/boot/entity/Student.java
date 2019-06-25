@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import static org.apache.logging.log4j.util.Strings.isBlank;
+
 @Entity
 public class Student {
     @Id
@@ -15,15 +17,6 @@ public class Student {
     @NotNull
     private String lastName;
     private String description;
-
-    private Student() {
-    }
-
-    public Student(String firstName, String lastName, String description) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.description = description;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -51,5 +44,12 @@ public class Student {
 
     public Long getId() {
         return id;
+    }
+
+    public boolean isRequiredFieldsEmpty() {
+        if (isBlank(this.firstName) || isBlank(this.lastName)) {
+            return true;
+        }
+        return false;
     }
 }
