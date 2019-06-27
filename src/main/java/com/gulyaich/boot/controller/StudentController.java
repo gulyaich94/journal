@@ -37,17 +37,17 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteEmployee(@PathVariable Long id) {
+    public void deleteStudent(@PathVariable Long id) {
         studentService.deleteById(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public Student findById(@PathVariable Long id) {
         return studentService.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
-    @PutMapping("/")
+    @PutMapping("/update")
     public Student updateStudent(@RequestBody Student student) {
         return studentService.updateStudent(student);
     }

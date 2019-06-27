@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.gulyaich.boot.exception.EmptyFieldsException.createEmptyFieldsException;
-
 @Service
 public class StudentService {
 
@@ -21,14 +19,8 @@ public class StudentService {
     }
 
     public Student createStudent(Student student) {
-        checkRequiredFields(student);
+        StudentUtils.checkRequiredFields(student);
         return studentRepository.save(student);
-    }
-
-    private void checkRequiredFields(Student student) {
-        if (student.isRequiredFieldsEmpty()) {
-            throw createEmptyFieldsException(student);
-        }
     }
 
     public void deleteById(Long id) {
