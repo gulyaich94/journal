@@ -4,6 +4,8 @@ import com.gulyaich.boot.entity.Student;
 import com.gulyaich.boot.exception.StudentNotFoundException;
 import com.gulyaich.boot.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,6 +31,11 @@ public class StudentController {
     @GetMapping("/")
     public ResponseEntity<List<Student>> getStudents() {
         return new ResponseEntity<>(studentService.getStudents(), HttpStatus.OK);
+    }
+
+    @GetMapping("/pagination/")
+    public ResponseEntity<Page<Student>> getStudentsPage(Pageable p) {
+        return new ResponseEntity<>(studentService.getStudentsPageable(p), HttpStatus.OK);
     }
 
     @PostMapping("/create")
