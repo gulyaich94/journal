@@ -15,26 +15,39 @@ public class StudentUtils {
     private static String FIRST_NAME_FIELD = "имя";
     private static String LAST_NAME_FIELD = "фамилия";
     private static String COMMA = ",";
+    private static int MIN_LENGTH = 2;
 
-    public static void checkRequiredFields(Student student) {
-        String emptyRequiredFields = getRequiredFieldsEmpty(student);
+    public static void checkFields(Student student) {
+        emptyRequiredCheck(student);
+        symbolsCheck(student);
+    }
+
+    private static void symbolsCheck(Student student) {
         String fieldsContainsErrorSymbols = getFieldsContainsErrorSymbols(student);
-        if (isNotBlank(emptyRequiredFields)) {
-            throw new StudentEmptyFieldsException(emptyRequiredFields);
-        }
         if (isNotBlank(fieldsContainsErrorSymbols)) {
             throw new StudentErrorSymbolsException(fieldsContainsErrorSymbols);
         }
     }
 
+    private static void emptyRequiredCheck(Student student) {
+        String emptyRequiredFields = getRequiredFieldsEmpty(student);
+        if (isNotBlank(emptyRequiredFields)) {
+            throw new StudentEmptyFieldsException(emptyRequiredFields);
+        }
+    }
+
     private static String getFieldsContainsErrorSymbols(Student student) {
         StringBuilder errorFields = new StringBuilder();
+        String firstName = student.getFirstName();
+        String lastName = student.getLastName();
         boolean wasField = false;
-        if (isNotBlank(student.getFirstName()) && !ALL_RUSSIAN_LETTERS.matcher(student.getFirstName()).matches()) {
+        if (isNotBlank(firstName)
+                && (!ALL_RUSSIAN_LETTERS.matcher(firstName).matches() || firstName.length() < MIN_LENGTH )) {
             errorFields.append(" " + FIRST_NAME_FIELD);
             wasField = true;
         }
-        if (isNotBlank(student.getLastName()) && !ALL_RUSSIAN_LETTERS.matcher(student.getLastName()).matches()) {
+        if (isNotBlank(lastName)
+                && (!ALL_RUSSIAN_LETTERS.matcher(lastName).matches() || lastName.length() < MIN_LENGTH)) {
             checkAndInsertComma(wasField, errorFields);
             errorFields.append(" " + LAST_NAME_FIELD);
             wasField = true;

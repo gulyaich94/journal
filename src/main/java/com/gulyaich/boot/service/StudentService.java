@@ -21,7 +21,7 @@ public class StudentService {
     }
 
     public Student createStudent(Student student) {
-        StudentUtils.checkRequiredFields(student);
+        StudentUtils.checkFields(student);
         return studentRepository.save(student);
     }
 
