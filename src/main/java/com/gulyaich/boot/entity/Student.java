@@ -4,18 +4,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "STUDENT")
 public class Student {
     @Id
     @GeneratedValue
+    @Column(name = "STUDENT_ID")
     private Long id;
     @NotNull
+    @Column(name = "FIRST_NAME")
     private String firstName;
     @NotNull
+    @Column(name = "LAST_NAME")
     private String lastName;
-    @Column(length = 1024)
+    @Column(name = "DESCRIPTION", length = 1024)
     private String description;
 
     public String getFirstName() {

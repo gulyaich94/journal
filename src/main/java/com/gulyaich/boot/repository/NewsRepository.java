@@ -1,10 +1,9 @@
 package com.gulyaich.boot.repository;
 
-import com.gulyaich.boot.entity.Student;
+import com.gulyaich.boot.entity.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
-
+public interface NewsRepository extends JpaRepository<News, Long> {
 }

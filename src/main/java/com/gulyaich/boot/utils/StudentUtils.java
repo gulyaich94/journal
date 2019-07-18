@@ -1,4 +1,4 @@
-package com.gulyaich.boot.service;
+package com.gulyaich.boot.utils;
 
 import com.gulyaich.boot.entity.Student;
 import com.gulyaich.boot.exception.StudentEmptyFieldsException;

@@ -3,6 +3,7 @@ package com.gulyaich.boot.service;
 import com.gulyaich.boot.entity.Student;
 import com.gulyaich.boot.exception.StudentEmptyFieldsException;
 import com.gulyaich.boot.exception.StudentErrorSymbolsException;
+import com.gulyaich.boot.utils.StudentUtils;
 import com.mifmif.common.regex.Generex;
 import org.junit.Test;
 import org.junit.runner.RunWith;

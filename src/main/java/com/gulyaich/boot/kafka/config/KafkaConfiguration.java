@@ -1,6 +1,6 @@
 package com.gulyaich.boot.kafka.config;
 
-import com.gulyaich.boot.kafka.model.News;
+import com.gulyaich.boot.entity.News;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;

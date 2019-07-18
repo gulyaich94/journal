@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2019-07-17-create-student-table" author="gulyaich">
+        <sql>
+            CREATE TABLE STUDENT (
+                STUDENT_ID int(5) NOT NULL,
+                FIRST_NAME varchar(255) NOT NULL,
+                LAST_NAME varchar(255) NOT NULL,
+                DESCRIPTION varchar(1024),
+                PRIMARY KEY(STUDENT_ID)
+            )
+        </sql>
+        <sql>COMMENT ON TABLE STUDENT IS 'Таблица студентов'</sql>
+        <sql>COMMENT ON COLUMN STUDENT.STUDENT_ID IS 'Идентификатор'</sql>
+        <sql>COMMENT ON COLUMN STUDENT.FIRST_NAME IS 'Имя студента'</sql>
+        <sql>COMMENT ON COLUMN STUDENT.LAST_NAME IS 'Фамилия студента'</sql>
+        <sql>COMMENT ON COLUMN STUDENT.DESCRIPTION IS 'Дополнительная информация'</sql>
+        <rollback>drop table Student</rollback>
+    </changeSet>
+</databaseChangeLog>
