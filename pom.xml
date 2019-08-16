@@ -10,6 +10,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <org.jooq.version>3.11.11</org.jooq.version>
     </properties>
 
     <parent>
@@ -17,7 +18,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.5.RELEASE</version>
     </parent>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -26,6 +27,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -104,6 +109,59 @@
                         <goals>
                             <goal>webpack</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${org.jooq.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <jdbc>
+                                <driver>org.h2.Driver</driver>
+                                <url>jdbc:h2:file:./data/db;DB_CLOSE_ON_EXIT=FALSE</url>
+                                <user>sa</user>
+                                <password></password>
+                            </jdbc>
+                            <generator>
+                                <database>
+                                    <returnAllOnUpdatableRecord>true</returnAllOnUpdatableRecord>
+                                    <name>org.jooq.meta.h2.H2Database</name>
+                                    <includes>.*</includes>
+                                    <excludes>
+                                        DATABASECHANGELOG | DATABASECHANGELOGLOCK
+                                    </excludes>
+                                    <inputSchema>PUBLIC</inputSchema>
+                                </database>
+                                <target>
+                                    <packageName>com.gulyaich.boot.jooq</packageName>
+                                    <directory>src/main/java/</directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java/</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

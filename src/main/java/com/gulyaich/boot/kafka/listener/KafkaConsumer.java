@@ -1,6 +1,7 @@
 package com.gulyaich.boot.kafka.listener;
 
 import com.gulyaich.boot.entity.News;
+import com.gulyaich.boot.exception.NewsErrorSaveException;
 import com.gulyaich.boot.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,6 +16,11 @@ public class KafkaConsumer {
     @KafkaListener(topics = "kafka_news", groupId = "news_group")
     public void consume(News news) {
         System.out.println("Message consumed " + news);
-        newsService.save(news);
+        try {
+            newsService.save(news);
+        } catch (NewsErrorSaveException e) {
+            System.out.println("News don't save " + news);
+
+        }
     }
 }

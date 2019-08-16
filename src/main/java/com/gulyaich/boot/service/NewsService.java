@@ -1,8 +1,9 @@
 package com.gulyaich.boot.service;
 
 import com.gulyaich.boot.entity.News;
-import com.gulyaich.boot.repository.NewsRepository;
+import com.gulyaich.boot.repository.NewsDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,13 +12,14 @@ import java.util.List;
 public class NewsService {
 
     @Autowired
-    private NewsRepository newsRepository;
+    @Qualifier("newsDaoJooq")
+    private NewsDao newsDao;
 
     public News save(News news) {
-        return newsRepository.save(news);
+        return newsDao.save(news);
     }
 
     public List<News> getAllNews() {
-        return newsRepository.findAll();
+        return newsDao.findAll();
     }
 }

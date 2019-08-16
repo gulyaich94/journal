@@ -4,6 +4,7 @@ import com.gulyaich.boot.entity.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface NewsRepository extends JpaRepository<News, Long> {
+@Repository("newsDaoRepository")
+public interface NewsDaoRepositoryImpl extends JpaRepository<News, Long>, NewsDao {
+
 }
