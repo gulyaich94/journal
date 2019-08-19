@@ -6,7 +6,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="changelog/student/student-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/news/news-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/newsresponse/newsresponse-changelog.xml" relativeToChangelogFile="true"/>
+    <changeSet id="2019-08-19-01-create-news-response-seq" author="gulyaich">
+        <sql>CREATE SEQUENCE SEQ_NEWS_RESPONSE_ID</sql>
+        <rollback>DROP SEQUENCE SEQ_NEWS_RESPONSE_ID</rollback>
+    </changeSet>
 </databaseChangeLog>

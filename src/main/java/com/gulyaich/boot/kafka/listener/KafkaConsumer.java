@@ -1,6 +1,8 @@
 package com.gulyaich.boot.kafka.listener;
 
 import com.gulyaich.boot.entity.News;
+import com.gulyaich.boot.kafka.model.NewsResponse;
+import com.gulyaich.boot.kafka.model.NewsStatus;
 import com.gulyaich.boot.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,17 +15,26 @@ public class KafkaConsumer {
     @Autowired
     private NewsService newsService;
 
-    @KafkaListener(topics = "kafka_news", groupId = "news_group")
-    @SendTo("kafka_news_response")
-    public News consume(News news) {
-        System.out.println("Message consumed " + news);
+    @KafkaListener(topics = "${kafka.topic.request-topic}")
+    @SendTo("${kafka.topic.requestreply-topic}")
+    public NewsResponse tryToSaveNews(News news) {
+        NewsResponse newsResponse = createNewsResponse(news);
         try {
             newsService.save(news);
-            news.setStatus("DONE");
+            newsResponse.setNewsStatus(NewsStatus.SUCCESS);
         } catch (Exception e) {
-            System.out.println("News don't save " + news + ". Reason: " + e);
-            news.setStatus("ERROR");
+            e.printStackTrace();
+            newsResponse.setNewsStatus(NewsStatus.ERROR);
+            newsResponse.setErrorReason(e.toString());
         }
-        return news;
+        return newsResponse;
+    }
+
+    private NewsResponse createNewsResponse(News news) {
+        NewsResponse newsResponse = new NewsResponse();
+        newsResponse.setTitle(news.getTitle());
+        newsResponse.setBody(news.getBody());
+        newsResponse.setDate(news.getDate());
+        return newsResponse;
     }
 }
