@@ -13,23 +13,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumer {
 
-    @Autowired
-    private NewsService newsService;
-
     @Value("${kafka.topic.news.request}")
     private String requestTopic;
 
+    @Autowired
+    private NewsService newsService;
+
     @KafkaListener(topics = "${kafka.topic.news.request}", containerFactory = "requestListenerContainerFactory")
-    @SendTo()
-    public News receive(News news) {
-        newsService.save(news);
+    @SendTo
+    public NewsResponse tryToSaveNews(News news) {
+        NewsResponse newsResponse = createNewsResponse(news);
         try {
             newsService.save(news);
-            news.setStatus(NewsStatus.SUCCESS);
+            newsResponse.setNewsStatus(NewsStatus.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            news.setStatus(NewsStatus.ERROR);
+            newsResponse.setNewsStatus(NewsStatus.ERROR);
+            newsResponse.setErrorReason(e.toString());
         }
-        return news;
+        return newsResponse;
+    }
+
+    private NewsResponse createNewsResponse(News news) {
+        NewsResponse newsResponse = new NewsResponse();
+        newsResponse.setTitle(news.getTitle());
+        newsResponse.setBody(news.getBody());
+        newsResponse.setDate(news.getDate());
+        return newsResponse;
     }
 }

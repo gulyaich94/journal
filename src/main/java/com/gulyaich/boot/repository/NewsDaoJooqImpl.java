@@ -44,7 +44,7 @@ public class NewsDaoJooqImpl implements NewsDao {
         Long nextID = dsl.nextval(SEQ_NEWS_ID);
 
         int isSuccessfulInsert = dsl.insertInto(NEWS)
-                .set(NEWS.NEWS_ID, SEQ_NEWS_ID.nextval())
+                .set(NEWS.NEWS_ID, nextID)
                 .set(NEWS.TITLE, news.getTitle())
                 .set(NEWS.BODY, news.getBody())
                 .set(NEWS.DATE, new Timestamp(news.getDate().getTime()))

@@ -31,8 +31,6 @@ public class News {
     @Column(name = "DATE")
     private Date date;
 
-    private NewsStatus status;
-
     public News() {
     }
 
@@ -70,14 +68,6 @@ public class News {
         return newsId;
     }
 
-    public NewsStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(NewsStatus status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "News{" +
@@ -85,7 +75,6 @@ public class News {
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", date=" + date +
-                ", status='" + status + '\'' +
                 '}';
     }
 }

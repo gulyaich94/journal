@@ -8,5 +8,4 @@
 
     <include file="changelog/student/student-changelog.xml" relativeToChangelogFile="true"/>
     <include file="changelog/news/news-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/newsresponse/newsresponse-changelog.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
