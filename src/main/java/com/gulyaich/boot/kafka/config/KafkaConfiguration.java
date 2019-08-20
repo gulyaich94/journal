@@ -17,9 +17,6 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.KafkaMessageListenerContainer;
-import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -30,22 +27,23 @@ import java.util.Map;
 @Configuration
 public class KafkaConfiguration {
 
+    @Value("${kafka.topic.news.reply}")
+    private String replyTopic;
+
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${kafka.topic.requestreply-topic}")
-    private String requestReplyTopic;
-
-    @Value("${kafka.consumergroup}")
-    private String consumerGroup;
-
+    @Value("${kafka.group.news}")
+    private String groupId;
+    
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+
         return props;
     }
 
@@ -55,45 +53,36 @@ public class KafkaConfiguration {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
         return props;
     }
 
     @Bean
-    public ProducerFactory<String, News> producerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerConfigs());
-    }
-
-    @Bean
-    public ConsumerFactory<String, News> consumerFactory() {
+    public ConsumerFactory<String, News> requestConsumerFactory() {
         final JsonDeserializer<News> jsonDeserializer = new JsonDeserializer<>(News.class, false);
         jsonDeserializer.addTrustedPackages("*");
-
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(), jsonDeserializer);
+        
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
+                jsonDeserializer);
     }
 
     @Bean
-    public KafkaTemplate<String, News> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
-    }
-
-    @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, News>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, News> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.setReplyTemplate(kafkaTemplate());
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, News>> requestListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, News> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(requestConsumerFactory());
+        factory.setReplyTemplate(replyTemplate());
         return factory;
     }
 
     @Bean
-    public KafkaMessageListenerContainer<String, News> replyContainer(ConsumerFactory<String, News> cf) {
-        ContainerProperties containerProperties = new ContainerProperties(requestReplyTopic);
-        return new KafkaMessageListenerContainer<>(cf, containerProperties);
+    public ProducerFactory<String, News> replyProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public ReplyingKafkaTemplate<String, News, News> replyKafkaTemplate(ProducerFactory<String, News> pf,
-                                                                        KafkaMessageListenerContainer<String, News> container) {
-        return new ReplyingKafkaTemplate<>(pf, container);
+    public KafkaTemplate<String, News> replyTemplate() {
+        return new KafkaTemplate<>(replyProducerFactory());
     }
 
 }

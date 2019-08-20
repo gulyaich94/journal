@@ -1,5 +1,7 @@
 package com.gulyaich.boot.entity;
 
+import com.gulyaich.boot.kafka.model.NewsStatus;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,8 @@ public class News {
     @NotNull
     @Column(name = "DATE")
     private Date date;
+
+    private NewsStatus status;
 
     public News() {
     }
@@ -66,12 +70,22 @@ public class News {
         return newsId;
     }
 
+    public NewsStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(NewsStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "News{" +
-                "title='" + title + '\'' +
+                "newsId=" + newsId +
+                ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", date=" + date +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
